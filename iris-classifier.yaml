@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: iris-classifier
+  name: iris-classifier
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: iris-classifier
+  template:
+    metadata:
+      labels:
+        app: iris-classifier
+    spec:
+      containers:
+      - image: iris-classifier:poc
+        name: iris-classifier
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iris-classifier
+  labels:
+    app: iris-classifier
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: iris-classifier
